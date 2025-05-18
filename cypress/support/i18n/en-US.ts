@@ -8,7 +8,7 @@ export default {
     loginFormButton: "Log in to my account",
     forgotPassword: "Forgot your password?",
     loginSuccess: "Login successful",
-    pageTitle: "Invoices",
+    pageTitle: "Issuing a new invoice",
   },
 
   // Add more translation strings as needed for the English domain

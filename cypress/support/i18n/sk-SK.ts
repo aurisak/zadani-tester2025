@@ -8,7 +8,7 @@ export default {
     loginFormButton: "Prihlásenie do môjho konta",
     forgotPassword: "Zabudli ste heslo?",
     loginSuccess: "Prihlásenie úspešné",
-    pageTitle: "Faktúry",
+    pageTitle: "Vystavenie novej faktúry",
   },
 
   // Add more translation strings as needed for the Slovak domain

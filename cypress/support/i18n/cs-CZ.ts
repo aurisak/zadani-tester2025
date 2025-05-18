@@ -8,7 +8,7 @@ export default {
     loginFormButton: "Přihlásit se do mého účtu",
     forgotPassword: "Zapomenuté heslo?",
     loginSuccess: "Přihlášení úspěšné",
-    pageTitle: "Faktury",
+    pageTitle: "Vystavení nové faktury"
   },
 
   // Add more translation strings as needed for the Czech domain
