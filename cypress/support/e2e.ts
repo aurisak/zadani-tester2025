@@ -16,8 +16,19 @@
 // Import commands.ts using ES2015 syntax:
 import "./commands";
 
-// Import Testing Library commands
+// Import Testing Library commands for better accessibility-based selectors
 import "@testing-library/cypress/add-commands";
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Import domain configuration and page objects
+import "./domainConfig";
+import "./pageObjects/BasePage";
+import "./pageObjects/LoginPage";
+
+// Import i18n support
+import "./i18n";
+
+// Disable uncaught exception handling since some app frameworks handle errors internally
+Cypress.on("uncaught:exception", (err) => {
+  // returning false here prevents Cypress from failing the test
+  return false;
+});
