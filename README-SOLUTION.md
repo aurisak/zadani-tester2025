@@ -1,6 +1,6 @@
 # Faktura Online Cross-Domain Tests
 
-This project implements end-to-end tests for the Faktura Online application across multiple domains (CZ, COM, SK) using Cypress with TypeScript and the Page Object Model pattern.
+This project implements end-to-end tests for the Faktura Online application across multiple domains (CZ, COM, SK) using Cypress with TypeScript and the Page Object Model pattern. Tests run on a single domain at a time, specified via the `TEST_DOMAIN` environment variable.
 
 ## Solution Overview
 
@@ -42,17 +42,27 @@ The credentials for each domain are stored in environment variables to avoid har
 
 ### Running the Tests
 
+The tests are configured to run on a single domain per test run, controlled by the `TEST_DOMAIN` environment variable:
+
 ```bash
-# Run tests in Cypress GUI
-yarn cy:open
+# Run tests in Cypress GUI for Czech domain
+TEST_DOMAIN=cz yarn cy:open
 
-# Run tests for all domains
-yarn test:all
+# Run tests in headless mode for specific domains
+TEST_DOMAIN=cz yarn cy:run
+TEST_DOMAIN=com yarn cy:run
+TEST_DOMAIN=sk yarn cy:run
+```
 
-# Run tests for specific domains
-yarn test:cz
-yarn test:com
-yarn test:sk
+To make this easier, you can add these scripts to your package.json:
+
+```json
+"scripts": {
+  "test:cz": "TEST_DOMAIN=cz cypress run",
+  "test:com": "TEST_DOMAIN=com cypress run",
+  "test:sk": "TEST_DOMAIN=sk cypress run",
+  "cy:open:cz": "TEST_DOMAIN=cz cypress open"
+}
 ```
 
 ## Project Structure

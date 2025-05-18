@@ -95,6 +95,15 @@ class DomainConfigurator {
       sk: this.configs.sk.loginPath,
     };
   }
+
+  /**
+   * Get current domain type based on Cypress baseUrl configuration
+   * @returns Current domain type ('cz', 'com', 'sk')
+   */
+  getCurrentDomain(): DomainType {
+    const baseUrl = Cypress.config("baseUrl") as string;
+    return this.getDomainFromUrl(baseUrl);
+  }
 }
 
 // Create and export a singleton instance

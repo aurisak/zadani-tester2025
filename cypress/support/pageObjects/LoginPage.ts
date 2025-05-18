@@ -8,16 +8,26 @@ class LoginPage extends BasePage {
   // Use domainConfig to get login paths
   private readonly PATHS = domainConfig.getLoginPaths();
 
+  private get formContainer() {
+    return cy.get(".el-form");
+  }
+
   private get emailInput() {
-    return cy.findByPlaceholderText(this.language.login.emailPlaceholder);
+    return this.formContainer.findByPlaceholderText(
+      this.language.login.emailPlaceholder
+    );
   }
 
   private get passwordInput() {
-    return cy.findByPlaceholderText(this.language.login.passwordPlaceholder);
+    return this.formContainer.findByPlaceholderText(
+      this.language.login.passwordPlaceholder
+    );
   }
 
   private get loginButton() {
-    return cy.findByRole("button", { name: this.language.login.loginButton });
+    return this.formContainer.findByRole("button", {
+      name: this.language.login.loginButton,
+    });
   }
 
   private get loginFormButton() {
@@ -30,14 +40,17 @@ class LoginPage extends BasePage {
    * Visits the login page
    */
   visit(): this {
-    // Determine the correct path based on domain
-    let path = this.PATHS.cz; // Default
+    // Clear all cookies, local storage, and session storage before visiting the login page
+    cy.clearAllCookies();
+    cy.clearAllLocalStorage();
+    cy.clearAllSessionStorage();
 
-    if (this.isDomain("com")) {
-      path = this.PATHS.com;
-    } else if (this.isDomain("sk")) {
-      path = this.PATHS.sk;
-    }
+    // Get current domain from the baseUrl
+    const currentDomain = Cypress.config("baseUrl") as string;
+    const domainType = domainConfig.getDomainFromUrl(currentDomain);
+
+    // Get the correct login path for the current domain
+    const path = this.PATHS[domainType];
 
     super.visit(path);
     this.loginFormButton.click();
@@ -78,10 +91,15 @@ class LoginPage extends BasePage {
 
   /**
    * Performs the login operation with the given credentials
-   * @param email - The email to use
-   * @param password - The password to use
    */
-  login(email?: string, password?: string): this {
+  login(): this {
+    const currentDomain = domainConfig.getDomainFromUrl(
+      Cypress.config("baseUrl") as string
+    );
+    const envPrefix = currentDomain.toUpperCase();
+    const email = Cypress.env(`${envPrefix}_EMAIL`);
+    const password = Cypress.env(`${envPrefix}_PASSWORD`);
+
     return this.enterEmail(email).enterPassword(password).clickLoginButton();
   }
 

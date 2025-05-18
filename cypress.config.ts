@@ -9,14 +9,17 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
 
-      // Set default domain - can be overridden in test commands
-      // Use environment variables if available, otherwise default to CZ domain
-      const domain = process.env.TEST_DOMAIN || "cz";
+      // Set domain based on TEST_DOMAIN environment variable
+      // This controls which domain the tests will run against for the entire test run
+      const testDomain = process.env.TEST_DOMAIN || "cz";
+      console.log(`Running tests for domain: ${testDomain}`);
+
+      // Map domain code to full base URL
       const baseUrl = {
         cz: "https://staging.fakturaonline.cz",
         com: "https://staging.invoiceonline.com",
         sk: "https://staging.fakturaonline.sk",
-      }[domain];
+      }[testDomain];
 
       config.baseUrl = baseUrl || "";
 
