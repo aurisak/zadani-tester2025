@@ -6,45 +6,45 @@ You are developing and maintaining frontend end-to-end (E2E) tests using Cypress
 
 You are tasked with writing Cypress E2E tests for the **"Faktura Online"** of a web application deployed on multiple domains. Focus on:
 
-* Addressing **form field differences** across domains.
-* Ensuring **maintainable, domain-specific logic**.
-* Demonstrating **clean code structure and reusability**.
+- Addressing **form field differences** across domains.
+- Ensuring **maintainable, domain-specific logic**.
+- Demonstrating **clean code structure and reusability**.
 
 ### 2. 🌐 **Domains Under Test**
 
-* `staging.fakturaonline.cz`
-* `staging.invoiceonline.com`
-* `staging.fakturaonline.sk`
+- `staging.fakturaonline.cz`
+- `staging.invoiceonline.com`
+- `staging.fakturaonline.sk`
 
 Each domain might feature a **different set of form fields** (e.g., “DIČ” may exist only on certain domains).
 
 ### 3. 🛠 **Testing Environment Requirements**
 
-* Use **Cypress** (TypeScript or JavaScript).
-* Implement **Page Object Model**.
-* Separate **test data via fixtures** and **domain-specific configuration**.
-* Avoid using **test-specific HTML IDs** — rely on **CSS selectors and HTML structure**.
+- Use **Cypress** (TypeScript or JavaScript).
+- Implement **Page Object Model**.
+- Separate **test data via fixtures** and **domain-specific configuration**.
+- Avoid using **test-specific HTML IDs** — rely on **CSS selectors and HTML structure**.
 
 ### 4. **Code Structure & Logic Separation**
 
-* Clearly **segment logic per domain**.
-* Detect domain from base URL and load matching configuration.
-* Dynamically adjust form interaction based on available fields.
+- Clearly **segment logic per domain**.
+- Detect domain from base URL and load matching configuration.
+- Dynamically adjust form interaction based on available fields.
 
 ### 5. **Selectors Strategy**
 
-* Use robust selectors derived from **visible text, attributes, or element hierarchy**.
-* Avoid reliance on test IDs or brittle selectors.
+- Use robust selectors derived from **visible text, attributes, or element hierarchy**.
+- Avoid reliance on test IDs or brittle selectors.
 
 ### 6. **Reusability & DRY Principle**
 
-* Encapsulate repeated actions (e.g., field filling, submission) in reusable functions.
-* Abstract domain-specific overrides cleanly.
+- Encapsulate repeated actions (e.g., field filling, submission) in reusable functions.
+- Abstract domain-specific overrides cleanly.
 
 ### 7. **Fixtures & Configuration**
 
-* Maintain **one fixture/config file per domain**.
-* Store expected fields, input values, and validation expectations separately.
+- Maintain **one fixture/config file per domain**.
+- Store expected fields, input values, and validation expectations separately.
 
 # 📏 Code Standards: Cypress Page Object Model (POM) with TypeScript
 
@@ -77,6 +77,7 @@ Each domain might feature a **different set of form fields** (e.g., “DIČ” m
 
    - Define selectors as private properties within the class to prevent external manipulation.
    - Avoid using complex CSS selectors or XPath expressions that are brittle and prone to breakage.
+   - All text based queries MUST be stored in separate language files to ensure easy localization and maintainability.
 
 4. **Actions and Methods:**
 
@@ -125,51 +126,51 @@ Each domain might feature a **different set of form fields** (e.g., “DIČ” m
 ```typescript
 // cypress/support/pageObjects/LoginPage.ts
 class LoginPage {
-  private usernameInput = () => cy.findByLabelText("Username")
-  private passwordInput = () => cy.findByLabelText("Password")
-  private loginButton = () => cy.findByRole("button", { name: /log in/i })
+  private usernameInput = () => cy.findByLabelText("Username");
+  private passwordInput = () => cy.findByLabelText("Password");
+  private loginButton = () => cy.findByRole("button", { name: /log in/i });
 
   public enterUsername(username: string): this {
-    this.usernameInput().type(username)
-    return this
+    this.usernameInput().type(username);
+    return this;
   }
 
   public enterPassword(password: string): this {
-    this.passwordInput().type(password)
-    return this
+    this.passwordInput().type(password);
+    return this;
   }
 
   public clickLogin(): this {
-    this.loginButton().click()
-    return this
+    this.loginButton().click();
+    return this;
   }
 }
 
-export default LoginPage
+export default LoginPage;
 ```
 
 ```typescript
 // cypress/e2e/login.spec.ts
-import LoginPage from "../support/pageObjects/LoginPage"
+import LoginPage from "../support/pageObjects/LoginPage";
 
 describe("Login Functionality", () => {
-  const loginPage = new LoginPage()
+  const loginPage = new LoginPage();
 
   it("should log in with valid credentials", () => {
-    cy.visit("/login")
+    cy.visit("/login");
     loginPage
       .enterUsername("testuser")
       .enterPassword("securepassword")
-      .clickLogin()
+      .clickLogin();
 
-    cy.url().should("include", "/dashboard")
-  })
-})
+    cy.url().should("include", "/dashboard");
+  });
+});
 ```
 
 By following these guidelines, you will create a robust, maintainable, and scalable E2E testing framework using Cypress and TypeScript, leveraging the Page Object Model and accessibility-focused selectors to their fullest potential.
 
---- 
+---
 
 # 📏 Code Standards: Testing Library Cypress Selector Rules
 
@@ -210,12 +211,12 @@ Use selectors in the **priority order** defined by Testing Library. Prefer queri
 
 ```js
 // 🚫 Bad: Relies on test ID unnecessarily
-cy.getByTestId("submit-button")
+cy.getByTestId("submit-button");
 ```
 
 ```js
 // 🚫 Bad: Uses CSS class
-cy.get(".button-primary")
+cy.get(".button-primary");
 ```
 
 ---
@@ -224,10 +225,10 @@ cy.get(".button-primary")
 
 ```js
 // ✅ Good: Uses role and accessible name
-cy.findByRole("button", { name: /submit/i })
+cy.findByRole("button", { name: /submit/i });
 ```
 
 ```js
 // ✅ Good: Uses label text for form control
-cy.findByLabelText("Email Address")
+cy.findByLabelText("Email Address");
 ```
