@@ -1,0 +1,14 @@
+{
+  "name": "Testovacia Spoločnosť SK",
+  "companyNumber": "35903059",
+  "taxNumber": "SK2021908522",
+  "phone": "421902123",
+  "email": "test.sk@example.com",
+  "web": "www.testspolocnost.sk",
+  "address": {
+    "street": "Námestie SNP 25",
+    "city": "Bratislava",
+    "postcode": "81101",
+    "country": "Slovensko"
+  }
+}

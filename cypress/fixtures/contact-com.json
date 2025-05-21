@@ -1,0 +1,14 @@
+{
+  "name": "Test Company COM",
+  "companyNumber": "12345678",
+  "taxNumber": "GB123456789",
+  "phone": "(484) 473-1748",
+  "email": "test.com@example.com",
+  "web": "www.testcompany.com",
+  "address": {
+    "street": "10 Downing Street",
+    "city": "London",
+    "postcode": "SW1A 2AA",
+    "country": "United Kingdom"
+  }
+}

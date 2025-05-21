@@ -1,0 +1,14 @@
+{
+  "name": "Testovací Společnost CZ",
+  "companyNumber": "27074359",
+  "taxNumber": "CZ27074359",
+  "phone": "777123456",
+  "email": "test.cz@example.com",
+  "web": "www.testspolecnost.cz",
+  "address": {
+    "street": "Václavské náměstí 837/11",
+    "city": "Praha",
+    "postcode": "11000",
+    "country": "Česká republika"
+  }
+}

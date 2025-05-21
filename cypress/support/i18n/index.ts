@@ -3,20 +3,20 @@ import csCZ from "./cs-CZ";
 import enUS from "./en-US";
 import skSK from "./sk-SK";
 
-// Define the type for language objects
-type LanguageStrings = typeof csCZ;
-
 // Create a map of domains to language files
-const languages: Record<string, LanguageStrings> = {
+const languages = {
   "staging.fakturaonline.cz": csCZ,
   "staging.invoiceonline.com": enUS,
   "staging.fakturaonline.sk": skSK,
-};
+} as const;
 
 // Function to get language strings based on the current domain
-export const getLanguage = (): LanguageStrings => {
+export const getLanguage = () => {
   const domain = Cypress.config("baseUrl")?.replace(/^https?:\/\//, "") || "";
-  return languages[domain as keyof typeof languages] || enUS; // Default to English if domain not found
+  if (domain in languages) return languages[domain as keyof typeof languages];
+  else {
+    throw new Error(`Language file not found for domain: ${domain}`);
+  }
 };
 
 export { csCZ, enUS, skSK };

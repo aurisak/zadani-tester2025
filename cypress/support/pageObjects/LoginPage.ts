@@ -1,31 +1,25 @@
-// LoginPage class that implements the login functionality
 import { BasePage } from "./BasePage";
-// Fix the import path to use the correct relative path
 import domainConfig from "../domainConfig";
-import { DomainType } from "../domainConfig";
 
 class LoginPage extends BasePage {
-  // Use domainConfig to get login paths
-  private readonly PATHS = domainConfig.getLoginPaths();
-
-  private get formContainer() {
-    return cy.get(".el-form");
+  private get loginFormContainer() {
+    return cy.get(".get-login");
   }
 
   private get emailInput() {
-    return this.formContainer.findByPlaceholderText(
+    return this.loginFormContainer.findByPlaceholderText(
       this.language.login.emailPlaceholder
     );
   }
 
   private get passwordInput() {
-    return this.formContainer.findByPlaceholderText(
+    return this.loginFormContainer.findByPlaceholderText(
       this.language.login.passwordPlaceholder
     );
   }
 
   private get loginButton() {
-    return this.formContainer.findByRole("button", {
+    return this.loginFormContainer.findByRole("button", {
       name: this.language.login.loginButton,
     });
   }
@@ -45,15 +39,23 @@ class LoginPage extends BasePage {
     cy.clearAllLocalStorage();
     cy.clearAllSessionStorage();
 
-    // Get current domain from the baseUrl
-    const currentDomain = Cypress.config("baseUrl") as string;
-    const domainType = domainConfig.getDomainFromUrl(currentDomain);
+    super.visit(domainConfig.getLoginPath());
 
-    // Get the correct login path for the current domain
-    const path = this.PATHS[domainType];
-
-    super.visit(path);
-    this.loginFormButton.click();
+    // Check if loginFormButton exists and is visible, then click it
+    // If the button doesn't exist, continue with the test flow
+    cy.get("body").then(($body) => {
+      // Use jQuery's :visible selector to check if the button exists and is visible
+      if (
+        $body
+          .find(`button:contains("${this.language.login.loginFormButton}")`)
+          .is(":visible")
+      ) {
+        cy.log("Found login form button, clicking it to proceed to login form");
+        this.loginFormButton.click();
+      } else {
+        cy.log("Login form is directly available, proceeding with login flow");
+      }
+    });
 
     return this;
   }
@@ -111,7 +113,7 @@ class LoginPage extends BasePage {
     // Use localized page title from translation files
     cy.findByRole("heading", {
       name: this.language.login.pageTitle,
-      timeout: 10000,
+      timeout: 10_000,
     }).should("exist");
     return this;
   }
